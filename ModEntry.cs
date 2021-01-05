@@ -26,6 +26,7 @@
 using StardewModdingAPI;
 using StardewValley.Characters;
 using Harmony;
+using StardewValley;
 
 namespace NotFarFromTheTree {
     public class ModEntry : Mod, IAssetLoader {
@@ -41,12 +42,11 @@ namespace NotFarFromTheTree {
             ModEntry.MOD_ID = this.ModManifest.UniqueID;
             ModEntry.MOD_HELPER = this.Helper;
             ModEntry.MONITOR = this.Monitor;
-
+            
             // Load Harmony (For Patching)
             HarmonyInstance harmony = HarmonyInstance.Create(ModEntry.MOD_ID);
             
             // Patch the method in Harmony
-            ModEntry.MONITOR.Log("Harmony patch loaded", LogLevel.Info);
             harmony.Patch(
                 AccessTools.Method(typeof(Child), nameof(Child.reloadSprite)),
                 new HarmonyMethod(typeof(ChildOverride), nameof(ChildOverride.reloadSprite))

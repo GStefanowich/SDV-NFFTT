@@ -136,8 +136,8 @@ namespace NotFarFromTheTree {
             string asset = this.GetAssetName();
             
             // If the asset is a non-game file, ensure it's loaded
-            if (Assets.IsWrapped(asset))
-                Assets.LoadSprite(asset, this.GetAssetPath());
+            /*if (Assets.IsWrapped(asset))
+                Assets.LoadSprite(asset, this.GetAssetPath());*/
             
             if (this.Sprite == null)
                 this.Sprite = new AnimatedSprite(asset, 0, 22, 16);
@@ -161,10 +161,6 @@ namespace NotFarFromTheTree {
             
             this.Sprite.UpdateSourceRect();
             this.instance.Breather = false;
-        }
-        public string GetCurrentSprite() {
-            ModEntry.MONITOR.Log(this.Sprite.textureName.Value, LogLevel.Alert);
-            return this.Sprite.loadedTexture;
         }
         
         /*

@@ -69,7 +69,7 @@ namespace NotFarFromTheTree {
                     
                     if (args.Length == 1) {
                         ChildDat data = ChildDat.Of(child);
-                        ModEntry.MONITOR.Log($"{child.Name}'s parent is {data.ParentName} / {data.GetCurrentSprite()}", LogLevel.Info);
+                        ModEntry.MONITOR.Log($"{child.Name}'s parent is {data.ParentName}.", LogLevel.Info);
                     } else {
                         // Get the inputted spouse
                         NPC parent = Game1.getCharacterFromName(args[1], true);

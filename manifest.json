@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "Not Far From The Tree",
 	"Author": "TheElm",
-	"Version": "1.1.0",
+	"Version": "1.1.1",
 	"Description": "A mod that makes the children of Stardew Valley look like their respective parent",
 	"UniqueID": "TheElm.NotFarFromTheTree",
 	"EntryDll": "NotFarFromTheTree.dll",

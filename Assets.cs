@@ -35,7 +35,14 @@ namespace NotFarFromTheTree {
         
         public static bool Has( string key ) => Assets.ASSETS.ContainsKey(key);
         
-        public static Texture2D Get( string key ) => Assets.ASSETS[key];
+        public static Texture2D Get(string key) {
+            while (true) {
+                if (Assets.ASSETS.TryGetValue(key, out Texture2D texture) && texture != null)
+                    return texture;
+                else if (!Assets.LoadSprite(key, Assets.UnWrap(key)))
+                    return null;
+            }
+        }
         
         public static bool SpriteExists( string path ) => File.Exists(Assets.ModLocal(path));
         
@@ -58,7 +65,11 @@ namespace NotFarFromTheTree {
         
         public static string Wrap( string path ) => $"{Assets.MOD_PREFIX}\\{path}";
         
-        public static bool IsWrapped(string path) => path.StartsWith($"{Assets.MOD_PREFIX}\\");
+        public static string UnWrap( string path ) {
+            return Assets.IsWrapped(path) ? path.Substring($"{Assets.MOD_PREFIX}\\".Length) : path;
+        }
+        
+        public static bool IsWrapped( string path ) => path.StartsWith($"{Assets.MOD_PREFIX}\\");
         
         public static string ModLocal( string file ) => Path.Combine(ModEntry.MOD_HELPER.DirectoryPath, Assets.ModAsset(file));
         
