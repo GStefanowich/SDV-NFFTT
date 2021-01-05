@@ -62,7 +62,7 @@ namespace NotFarFromTheTree {
         /*
          * Asset Handling Overrides
          */
-        bool IAssetLoader.CanLoad<T>(IAssetInfo asset) => Assets.Has(asset.AssetName) || asset.AssetName.StartsWith("NFFTT\\");
+        bool IAssetLoader.CanLoad<T>(IAssetInfo asset) => Assets.Has(asset.AssetName) || Assets.IsWrapped(asset.AssetName);
         T IAssetLoader.Load<T>(IAssetInfo asset) => (T)(object)Assets.Get(asset.AssetName);
     }
 }

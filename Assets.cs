@@ -31,7 +31,7 @@ using StardewModdingAPI;
 namespace NotFarFromTheTree {
     public static class Assets {
         private static readonly ConcurrentDictionary<string, Texture2D> ASSETS = new ConcurrentDictionary<string, Texture2D>();
-        private const string MOD_PREFIX = "NFFTT\\";
+        private const string MOD_PREFIX = "NFFTT";
         
         public static bool Has( string key ) => Assets.ASSETS.ContainsKey(key);
         
@@ -56,7 +56,9 @@ namespace NotFarFromTheTree {
             return false;
         }
         
-        public static string Wrap( string path ) => $"${Assets.MOD_PREFIX}\\{path}";
+        public static string Wrap( string path ) => $"{Assets.MOD_PREFIX}\\{path}";
+        
+        public static bool IsWrapped(string path) => path.StartsWith($"{Assets.MOD_PREFIX}\\");
         
         public static string ModLocal( string file ) => Path.Combine(ModEntry.MOD_HELPER.DirectoryPath, Assets.ModAsset(file));
         

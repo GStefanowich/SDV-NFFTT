@@ -136,7 +136,7 @@ namespace NotFarFromTheTree {
             string asset = this.GetAssetName();
             
             // If the asset is a non-game file, ensure it's loaded
-            if (asset.StartsWith("NFFTT\\"))
+            if (Assets.IsWrapped(asset))
                 Assets.LoadSprite(asset, this.GetAssetPath());
             
             if (this.Sprite == null)
