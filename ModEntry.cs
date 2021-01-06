@@ -26,7 +26,6 @@
 using StardewModdingAPI;
 using StardewValley.Characters;
 using Harmony;
-using StardewValley;
 
 namespace NotFarFromTheTree {
     public class ModEntry : Mod, IAssetLoader {
@@ -56,7 +55,11 @@ namespace NotFarFromTheTree {
             helper.Events.Multiplayer.ModMessageReceived += ModEvents.OnMessageNotification;
             
             // Register command
-            helper.ConsoleCommands.Add("genetics", "Change the resemblance of one of your children to an NPC.\n\nUsage: child_parent <Child> <Parent>\n- Child: The name of your child.\n- Parent: An NPC from the town (IE; \"Harvey\", \"Emily\", \"Haley\"...).\n", ModEvents.CommandUpdateChild);
+            helper.ConsoleCommands.Add(
+                "genetics",
+                "Change the resemblance of one of your children to an NPC.\n\nUsage: child_parent <Child> <Parent>\n- Child: The name of your child.\n- Parent: An NPC from the town (IE; \"Harvey\", \"Emily\", \"Haley\"...).\n",
+                ModEvents.CommandGeneticsBase
+            );
         }
         
         /*

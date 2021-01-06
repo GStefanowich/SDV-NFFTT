@@ -34,7 +34,7 @@ namespace NotFarFromTheTree {
         /*
          * Event Handlers
          */
-        public static void OnMessageNotification(object sender, ModMessageReceivedEventArgs e) {
+        public static void OnMessageNotification( object sender, ModMessageReceivedEventArgs e ) {
             if (e.FromModID != ModEntry.MOD_ID) return;
             
             switch (e.Type) {
@@ -49,7 +49,7 @@ namespace NotFarFromTheTree {
         /*
          * When the Command is Dispatched
          */
-        public static void CommandUpdateChild(string command, string[] args) {
+        public static void CommandGeneticsBase( string command, string[] args ) {
             // Get input length
             switch (args.Length) {
                 case 0:

@@ -230,12 +230,9 @@ namespace NotFarFromTheTree {
         }
         
         public void LoadParent() {
-            if (!Context.IsMainPlayer)
-                return;
-            
             if (this.Data.TryGetValue(this.GetSaveKey(), out string parentName) && parentName != null) {
                 this.ParentName = parentName;
-            } else {
+            } else if (Context.IsMainPlayer) {
                 // Attempt to read the value from the GAME DATA
                 Farmer farmer = Game1.getFarmerMaybeOffline(this.instance.idOfParent.Value);
                 NPC spouse = farmer?.getSpouse();
