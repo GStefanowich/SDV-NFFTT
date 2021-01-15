@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets.cs" />
+    <Compile Include="Blender.cs" />
     <Compile Include="ChildDat.cs" />
     <Compile Include="ChildOverride.cs" />
     <Compile Include="ModEntry.cs" />

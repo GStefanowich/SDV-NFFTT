@@ -35,7 +35,7 @@ namespace NotFarFromTheTree {
         
         public static bool Has( string key ) => Assets.ASSETS.ContainsKey(key);
         
-        public static Texture2D Get(string key) {
+        public static Texture2D Get( string key ) {
             while (true) {
                 if (Assets.ASSETS.TryGetValue(key, out Texture2D texture) && texture != null)
                     return texture;
@@ -73,6 +73,12 @@ namespace NotFarFromTheTree {
         
         public static string ModLocal( string file ) => Path.Combine(ModEntry.MOD_HELPER.DirectoryPath, Assets.ModAsset(file));
         
-        public static string ModAsset( string asset ) => Path.Combine("assets", asset);
+        public static string ModAsset( string asset ) => Path.Combine("assets", Assets.Normalize(asset));
+        
+        public static string Normalize( string asset ) {
+            if (Path.PathSeparator != '\\' && asset.Contains("\\"))
+                return Path.Combine(asset.Split('\\'));
+            return asset;
+        }
     }
 }

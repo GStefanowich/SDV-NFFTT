@@ -23,6 +23,7 @@
  * SOFTWARE.
  */
 
+using System;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -75,6 +76,12 @@ namespace NotFarFromTheTree {
                         NPC parent = Game1.getCharacterFromName(args[1], true);
                         if (parent == null) {
                             ModEntry.MONITOR.Log($"Specified <Parent> \"{args[1]}\" could not be located.", LogLevel.Error);
+                            return;
+                        }
+                        
+                        // NPC must be an Adult NPC
+                        if (parent.Age != NPC.adult) {
+                            ModEntry.MONITOR.Log($"Specified <Parent> must be an adult!", LogLevel.Error);
                             return;
                         }
                         

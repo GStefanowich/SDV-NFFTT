@@ -54,6 +54,9 @@ namespace NotFarFromTheTree {
             // When receiving messages from other mods
             helper.Events.Multiplayer.ModMessageReceived += ModEvents.OnMessageNotification;
             
+            // When exiting a game, dump the Cached values
+            helper.Events.GameLoop.ReturnedToTitle += (sender, args) => ChildDat.CHILDREN_PARENT.Clear();
+            
             // Register command
             helper.ConsoleCommands.Add(
                 "genetics",
