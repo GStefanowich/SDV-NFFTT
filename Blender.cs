@@ -123,11 +123,28 @@ namespace NotFarFromTheTree {
             ["Willy"] = 0,
             ["Wizard"] = 0
         };
+        private const int BLEND = 11;
         
-        private static bool AreAdopters( Character parent1, Character parent2 ) {
+        /**
+         * If two Parents (Farmer, NPC) or (Farmer, Farmer) are the same sex
+         */
+        public static bool AreAdopters( Character parent1, Character parent2 ) {
             return Blender.GetSex(parent1) == Blender.GetSex(parent2);
         }
         
+        /**
+         * Verify that Parents are adults (Cannot blend with child NPCs: Jas, Vicent, Leo...)
+         */
+        public static bool IsOfAge( params Character[] characters ) {
+            foreach (Character character in characters)
+                if (character is NPC npc && npc.Age != NPC.adult)
+                    return false;
+            return true;
+        }
+        
+        /**
+         * Get the sex of a Farmer or NPC
+         */
         private static int GetSex( Character character ) {
             if (character is NPC npc)
                 return npc.Gender;
@@ -136,15 +153,17 @@ namespace NotFarFromTheTree {
             return -1;
         }
         
+        /**
+         * Blend two colors randomly
+         */
         public static Color Blend( this Color start, Color end ) {
-            const int POINTS = 11;
-            int rand = Game1.random.Next(1, POINTS),
-                incR = (end.R - start.R) / (POINTS - 1),
-                incG = (end.G - start.G) / (POINTS - 1),
-                incB = (end.B - start.B) / (POINTS - 1);
+            int rand = Game1.random.Next(1, Blender.BLEND),
+                incR = (end.R - start.R) / (Blender.BLEND - 1),
+                incG = (end.G - start.G) / (Blender.BLEND - 1),
+                incB = (end.B - start.B) / (Blender.BLEND - 1);
             
-            Color[] colors = new Color[POINTS];
-            for ( int i = 0; i < POINTS; i++ ) {
+            Color[] colors = new Color[Blender.BLEND];
+            for ( int i = 0; i < Blender.BLEND; i++ ) {
                 colors[i] = new Color(
                     start.R + (incR * i),
                     start.G + (incG * i),
@@ -157,64 +176,94 @@ namespace NotFarFromTheTree {
             return colors[rand - 1];
         }
         
-        /*
-         * Skin
+        /**
+         * Create a random skin color using two parents
          */
-        
         public static int SkinColor( Character parent1, Character parent2 ) {
             if (Blender.AreAdopters(parent1, parent2))
                 return Blender.NaturalSkinColor();
             return 0;
         }
         
+        /**
+         * Get a natural (Not blue, red, purple) skin color, in the case of adoptees
+         */
         private static int NaturalSkinColor() {
             // TODO: Add a randomizer for skin colors
             return 0;
         }
         
+        /**
+         * Get the skin color of a farmer or NPC
+         */
         public static int GetSkinColor( Character character ) {
+            // If character is a Farmer, return their skin color
             if (character is Farmer farmer)
                 return farmer.skinColor;
+            
+            // If character is an NPC, return their skin color
             if (character is NPC npc && Blender.NPC_SKIN.TryGetValue(npc.Name, out int color))
                 return color;
+            
+            // Create a new random skin color (Fallback)
             return Blender.NaturalSkinColor();
         }
         
-        /*
-         * Hair
+        /**
+         * Get a random hair color using two parents
          */
-        
         public static Color HairColor( Character parent1, Character parent2 ) => Blender.AreAdopters(parent1, parent2) ? Blender.NaturalHairColor() : Blender.GetHairColor(parent1).Blend(Blender.GetHairColor(parent2));
         
+        /**
+         * Get a natural (Not blue, red, purple) hair color, in the case of adoptees
+         */
         private static Color NaturalHairColor() {
             // TODO: Add a randomizer for hair colors
             return Color.Brown;
         }
         
+        /**
+         * Get the hair color of a Farmer or NPC
+         */
         public static Color GetHairColor( Character character ) {
+            // If character is a Farmer, return their hair color
             if (character is Farmer farmer)
                 return farmer.hairstyleColor.Value;
+            
+            // If character is an NPC, return their hair color
             if (character is NPC npc && Blender.NPC_HAIR.TryGetValue(npc.Name, out Color color))
                 return color;
+            
+            // Create a new random hair color (Fallback)
             return Blender.NaturalHairColor();
         }
         
-        /*
-         * Eyes
+        /**
+         * Get a random hair color using two parents
          */
-        
         public static Color EyeColor( Character parent1, Character parent2 ) => Blender.AreAdopters(parent1, parent2) ? Blender.NaturalEyeColor() : Blender.GetEyeColor(parent1).Blend(Blender.GetEyeColor(parent2));
         
+        /**
+         * Get a natural (Not orange, pink, purple) eye color, in the case of adoptees
+         */
         private static Color NaturalEyeColor() {
             // TODO: Add a randomizer for Hair Colors
             return Color.Blue;
         }
         
+        /**
+         * Get the eye color of a Farmer or NPC
+         */
         public static Color GetEyeColor( Character character ) {
+            // If character is a Farmer, return their eye color
             if (character is Farmer farmer)
                 return farmer.newEyeColor.Value;
+            
+            // If character is an NPC, return their eye color
             if (character is NPC npc && Blender.NPC_EYES.TryGetValue(npc.Name, out Color color))
                 return color;
+            
+            // Create a new random eye color (Fallback)
             return Blender.NaturalEyeColor();
         }
     }

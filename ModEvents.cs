@@ -23,7 +23,6 @@
  * SOFTWARE.
  */
 
-using System;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -60,35 +59,29 @@ namespace NotFarFromTheTree {
                 case 2: {
                     // Get the inputted child
                     Child child = ChildDat.GetByName(args[0]);
-                    if (child == null) {
-                        ModEntry.MONITOR.Log($"Could not location a <Child> named \"{args[0]}\".", LogLevel.Error);
-                        return;
-                    } else if (child.idOfParent.Value != Game1.player.UniqueMultiplayerID && (!Context.IsMainPlayer)) {
-                        ModEntry.MONITOR.Log($"That <Child> \"{args[0]}\" does not belong to you.", LogLevel.Error);
-                        return;
-                    }
                     
-                    if (args.Length == 1) {
-                        ChildDat data = ChildDat.Of(child);
-                        ModEntry.MONITOR.Log($"{child.Name}'s parent is {data.ParentName}.", LogLevel.Info);
-                    } else {
+                    if ( /* Child must be an existing Child */ child == null)
+                        ModEntry.MONITOR.Log($"Could not location a <Child> named \"{args[0]}\".", LogLevel.Error);
+                    
+                    else if ( /* Child cannot be another players */ child.idOfParent.Value != Game1.player.UniqueMultiplayerID && (!Context.IsMainPlayer))
+                        ModEntry.MONITOR.Log($"That <Child> \"{args[0]}\" does not belong to you.", LogLevel.Error);
+                    
+                    else if (args.Length == 1)
+                        ModEntry.MONITOR.Log($"{child.Name}'s parent is {ChildDat.Of(child).ParentName}.", LogLevel.Info);
+                    
+                    else {
                         // Get the inputted spouse
                         NPC parent = Game1.getCharacterFromName(args[1], true);
-                        if (parent == null) {
+                        if ( /* Parent must be an existing NPC */ parent == null)
                             ModEntry.MONITOR.Log($"Specified <Parent> \"{args[1]}\" could not be located.", LogLevel.Error);
-                            return;
-                        }
-                        
-                        // NPC must be an Adult NPC
-                        if (parent.Age != NPC.adult) {
+                        else if ( /* NPC must be an Adult NPC */ !Blender.IsOfAge(parent))
                             ModEntry.MONITOR.Log($"Specified <Parent> must be an adult!", LogLevel.Error);
-                            return;
+                        else {
+                            ChildDat data = ChildDat.Of(child, parent);
+                            if (!data.Save(true))
+                                Game1.addHUDMessage(new HUDMessage("Host is not using mod \"NotFarFromTheTree\". Updated Children will not save.", HUDMessage.error_type));
+                            ModEntry.MONITOR.Log($"{data.ChildName} now takes after {data.ParentName}", LogLevel.Info);
                         }
-                        
-                        ChildDat data = ChildDat.Of(child, parent);
-                        if (!data.Save(true))
-                            Game1.addHUDMessage(new HUDMessage("Host is not using mod \"NotFarFromTheTree\". Updated Children will not save.", HUDMessage.error_type));
-                        ModEntry.MONITOR.Log($"{data.ChildName} now takes after {data.ParentName}", LogLevel.Info);
                     }
                     return;
                 }
