@@ -63,22 +63,18 @@ namespace NotFarFromTheTree {
             return false;
         }
         
-        public static string Wrap( string path ) => $"{Assets.MOD_PREFIX}\\{path}";
+        public static string WRAP => $"{Assets.MOD_PREFIX}{Path.DirectorySeparatorChar}";
+        
+        public static string Wrap( string path ) => $"{Assets.WRAP}{path}";
         
         public static string UnWrap( string path ) {
-            return Assets.IsWrapped(path) ? path.Substring($"{Assets.MOD_PREFIX}\\".Length) : path;
+            return Assets.IsWrapped(path) ? path.Substring(Assets.WRAP.Length) : path;
         }
         
-        public static bool IsWrapped( string path ) => path.StartsWith($"{Assets.MOD_PREFIX}\\");
+        public static bool IsWrapped( string path ) => path.StartsWith(Assets.WRAP);
         
         public static string ModLocal( string file ) => Path.Combine(ModEntry.MOD_HELPER.DirectoryPath, Assets.ModAsset(file));
         
-        public static string ModAsset( string asset ) => Path.Combine("assets", Assets.Normalize(asset));
-        
-        public static string Normalize( string asset ) {
-            if (Path.PathSeparator != '\\' && asset.Contains("\\"))
-                return Path.Combine(asset.Split('\\'));
-            return asset;
-        }
+        public static string ModAsset( string asset ) => Path.Combine("assets", asset);
     }
 }

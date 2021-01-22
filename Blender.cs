@@ -137,7 +137,7 @@ namespace NotFarFromTheTree {
          */
         public static bool IsOfAge( params Character[] characters ) {
             foreach (Character character in characters)
-                if (character is NPC npc && npc.Age != NPC.adult)
+                if (character is NPC npc && npc.Age == NPC.child)
                     return false;
             return true;
         }

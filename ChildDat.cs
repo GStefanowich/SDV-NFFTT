@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using StardewModdingAPI;
@@ -118,11 +119,11 @@ namespace NotFarFromTheTree {
          */
         
         public string GetAssetPath() => this.IsOrphan ? this.GetDefaultAssetPath() : this.GetAssetPath(this.ParentName);
-        public string GetAssetPath(string parentName) => $"{parentName}\\{this.GetDefaultAssetPath()}";
+        public string GetAssetPath(string parentName) => $"{parentName}{Path.DirectorySeparatorChar}{this.GetDefaultAssetPath()}";
         public string GetDefaultAssetPath() => $"{this.AgeString}{(this.IsMale || this.IsBaby ? "" : "_girl") + (this.IsDarkSkin ? "_dark" : "")}";
         
         public string GetAssetName() => this.IsOrphan ? this.GetDefaultAssetName() : Assets.Wrap(this.GetAssetPath());
-        public string GetDefaultAssetName() => $"Characters\\{this.GetDefaultAssetPath()}";
+        public string GetDefaultAssetName() => $"Characters{Path.DirectorySeparatorChar}{this.GetDefaultAssetPath()}";
         
         /*
          * Current Sprite Handling
@@ -134,10 +135,6 @@ namespace NotFarFromTheTree {
             
             // Get the name of the asset to use
             string asset = this.GetAssetName();
-            
-            // If the asset is a non-game file, ensure it's loaded
-            /*if (Assets.IsWrapped(asset))
-                Assets.LoadSprite(asset, this.GetAssetPath());*/
             
             if (this.Sprite == null)
                 this.Sprite = new AnimatedSprite(asset, 0, 22, 16);
